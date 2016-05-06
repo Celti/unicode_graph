@@ -1,7 +1,7 @@
 # unicode_graph: Unicode glyph graphs with Rust
-Inspired by the Python [graph](https://github.com/chrisbouchard/graph) library.
+Inspired by the Python [graph](https://github.com/chrisbouchard/braillegraph) library.
 
-My first version was in [bash](https://github.com/Celti/graph.sh); now it's a Rust crate offering both a library and binary using nothing but std.
+My first version was in [bash](https://github.com/Celti/braillegraph.sh); now it's a Rust crate offering both a library and binary using nothing but std.
 
 ## Utility
 As the bash version, but much faster.
