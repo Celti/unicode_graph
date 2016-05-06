@@ -1,0 +1,10 @@
+[package]
+name = "unicode_graph"
+version = "0.9.9"
+description = "Unicode glyph graphs with Rust"
+authors = ["Patrick Burroughs (Celti) <celti@celti.name>"]
+license = "Apache-2.0/MIT"
+
+repository = "https://github.com/Celti/unicode_graph"
+readme = "README.md"
+keywords = ["braille", "graph", "Unicode"]
