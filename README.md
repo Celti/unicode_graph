@@ -3,8 +3,8 @@
 [![Coverage Status](https://coveralls.io/repos/github/Celti/unicode_graph/badge.svg?branch=master)](https://coveralls.io/github/Celti/unicode_graph?branch=master)
 [![Clippy Linting Result](https://clippy.bashy.io/github/Celti/unicode_graph/master/badge.svg)](https://clippy.bashy.io/github/Celti/unicode_graph/master/log)
 
-# unicode_graph: Unicode glyph bar graphs with Rust
-unicode_graph is a library to draw bar graphs using Unicode glyphs (currently the [Braille Patterns block](http://unicode-table.com/en/blocks/braille-patterns/), 0x2800–0x28FF —  more are planned). It includes `graph`, a command-line utility leveraging the library, suitable for generating output for [dzen](https://github.com/robm/dzen), [xmobar](http://projects.haskell.org/xmobar/), [i3bar](http://i3wm.org/), or even your [tmux](https://tmux.github.io/) statusbar.
+# unicode_graph: Unicode glyph bar graphs
+unicode_graph is a Rust library to draw bar graphs using Unicode glyphs (currently the [Braille Patterns block](http://unicode-table.com/en/blocks/braille-patterns/), 0x2800–0x28FF —  more are planned). It includes `graph`, a command-line utility leveraging the library, suitable for generating output for [dzen](https://github.com/robm/dzen), [xmobar](http://projects.haskell.org/xmobar/), [i3bar](http://i3wm.org/), or even your [tmux](https://tmux.github.io/) statusbar.
 
 unicode_graph was inspired by the Python [braillegraph](https://github.com/chrisbouchard/braillegraph) library, though unicode_graph and it's predecessor, [braillegraph.sh](https://github.com/Celti/braillegraph.sh), have hardly any algorithmic resemblance to their Python muse.
 
