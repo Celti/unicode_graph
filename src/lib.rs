@@ -1,7 +1,15 @@
+// Copyright (c) 2016 Patrick Burroughs <celti@celti.name>.
+//
+// Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
+// https://www.apache.org/licenses/LICENSE-2.0>, or the MIT license
+// <LICENSE-MIT or https://opensource.org/licenses/MIT>, at your option.
+// This file may not be copied, modified, or distributed except
+// according to those terms.
+
 pub mod braille;
 
 pub mod graph {
-    use std::{fmt, error, result};
+    use std::{char, error, fmt, result};
 
     #[derive(Debug)]
     pub struct ParseGraphError;
@@ -25,7 +33,7 @@ pub mod graph {
             let mut string = String::new();
 
             for block in line {
-                string.push(try!(::std::char::from_u32(*block).ok_or(ParseGraphError)))
+                string.push(try!(char::from_u32(*block).ok_or(ParseGraphError)))
             };
 
             output.insert(index,string)

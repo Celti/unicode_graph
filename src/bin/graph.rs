@@ -39,9 +39,10 @@ fn usage(argc: String) {
             \n\
             Prints a graph made of Unicode glyphs (at current only Braille patterns).
             \n\
-            Usage: {} [h|v] <index> [<index> ...]\n\
+            Usage: {} [h|v][r] <index> [<index> ...]\n\
             \x20\x20‘h’ and ‘v’ request a horizontal or vertical graph (horizontal if omitted).\n\
-            \x20\x20The remaining unsigned integer arguments indicate the size of bar of the graph.\n",
+            \x20\x20`r` reverses the usual direction of the graph (i.e., from the top or left).\n\
+            \x20\x20The remaining integer arguments indicate the size of the bar at that index.\n",
             VERSION, argc)
 }
 
@@ -51,18 +52,32 @@ fn _main(mut argv: Vec<String>) -> Result<bool, CommandError> {
         None    => { return Ok(false) }
     };
 
-    let call = match arg1.as_ref() {
-        "v" => { argv.remove(0); "vertical" }
-        "h" => { argv.remove(0); "horizontal" }
-        num if num.parse::<usize>().is_ok() => { "horizontal" }
+    let (call, reverse) = match arg1.as_ref() {
+        "v" => { argv.remove(0); ("vertical", false) }
+        "h" => { argv.remove(0); ("horizontal", false) }
+        "vr" => { argv.remove(0); ("vertical", true) }
+        "hr" => { argv.remove(0); ("horizontal", true) }
+        "r" => { ("horizontal", true) }
+        num if num.parse::<usize>().is_ok() => { ("horizontal", false) }
+        err => { return Err(CommandError::ParseArgs(err.to_owned())) }
+    };
+
+    let arg2 = match argv.get(0) {
+        Some(x) => { x.clone() }
+        None    => { return Err(CommandError::ParseArgs("no input specified".to_owned())) }
+    };
+
+    let reverse = match arg2.as_ref() {
+        "r" => { argv.remove(0); true }
+        num if num.parse::<usize>().is_ok() => { reverse }
         err => { return Err(CommandError::ParseArgs(err.to_owned())) }
     };
 
     let input: Vec<usize> = try!(argv.into_iter().map(|i| i.trim().parse()).collect());
 
     let graph = match call {
-        "horizontal" => { try!(braille::horizontal_graph(input)) }
-        "vertical"   => { try!(braille::vertical_graph(input)) }
+        "horizontal" => { try!(braille::horizontal_graph(reverse, input)) }
+        "vertical"   => { try!(braille::vertical_graph(reverse, input)) }
         _            => { return Err(CommandError::UnknownError) }
     };
 
