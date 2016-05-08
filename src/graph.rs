@@ -1,18 +1,15 @@
-use super::error::Result;
-use super::error::ParseGraphError as Error;
-use super::error::GraphErrorKind::InvalidChar;
+use super::{Graph, Result};
+use super::GraphErrorKind::InvalidChar;
+use super::ParseGraphError as Error;
 
-pub fn graph_to_strings(input: Vec<Vec<u32>>) -> Result<Vec<String>> {
-    let mut output = Vec::new();
+pub fn graph_to_strings(input: Graph) -> Result<Vec<String>> {
+    let mut output = Vec::with_capacity(input.len());
 
-    for (index, line) in input.iter().enumerate() {
-        let mut string = String::new();
-
-        for block in line {
-            string.push(try!(::std::char::from_u32(*block).ok_or(Error { kind: InvalidChar })))
-        };
-
-        output.insert(index, string)
+    for line in input.into_iter() {
+        output.push(try!(
+            line.into_iter()
+            .map(|block| ::std::char::from_u32(block).ok_or(Error { kind: InvalidChar }))
+            .collect()))
     };
 
     Ok(output)

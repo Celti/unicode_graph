@@ -6,8 +6,8 @@
 // This file may not be copied, modified, or distributed except
 // according to those terms.
 
-use super::error::Result;
-use super::error::ParseGraphError as Error;
-use super::error::GraphErrorKind::NoInput;
+use super::{Graph, Result};
+use super::GraphErrorKind::NoInput;
+use super::ParseGraphError as Error;
 
 const EMPTY: u32 = 0x00A0;

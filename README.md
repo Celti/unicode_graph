@@ -101,24 +101,30 @@ Usage: `graph [h|v][r] <index> [<index> ...]`
 ```rust
 extern crate unicode_graph;
 
-use unicode_graph::Result;
-use unicode_graph::ParseGraphError;
-use unicode_graph::braille;
-use unicode_graph::graph;
+// Type declarations.
+use unicode_graph::{Graph, Result, ParseGraphError};
+
+// Functions.
+use unicode_graph::{braille, graph};
+
+pub struct ParseGraphError; // impl Display, Error
 
 pub type Result<T> = std::result::Result<T, ParseGraphError>;
+pub type Graph = Vec<Vec<u32>>;
 
-fn braille::horizontal_graph (reverse: bool, input: Vec<usize>) -> Result<Vec<Vec<u32>>>;
-fn braille::vertical_graph   (reverse: bool, input: Vec<usize>) -> Result<Vec<Vec<u32>>>;
+fn braille::horizontal_graph (reverse: bool, input: Vec<usize>) -> Result<Graph>;
+fn braille::vertical_graph   (reverse: bool, input: Vec<usize>) -> Result<Graph>;
 
-fn graph::graph_to_strings   (input: Vec<Vec<u32>>)             -> Result<Vec<String>>;
+fn graph::graph_to_strings (input: Graph) -> Result<Vec<String>>;
 ```
 
-The input vector to `braille::*_graph()` (`Vec<usize>`) is a simple list of bar sizes (height or length). The output from them (`Vec<Vec<u32>`) is a list of lines of Unicode code points in the range of 0x2800 to 0x28FF (the [Braille Patterns block](http://unicode-table.com/en/blocks/braille-patterns/)). They also take a bool to indicate if they should produce reversed output.
+The various `*::*_graph()` functions take a simple `Vec<usize>` of bar sizes for input (height or length); functions with reversible output also take a `bool` to indicate that. The output from them is a `Graph`, which is simply an alias for `Vec<Vec<u32>>`, because all those nested angle brackets get tedious. Each node in a `Graph` *should* only contain a number corresponding to a valid Unicode code point, and the functions provided by this library *will* only provide them when given valid input.
 
-The `graph_to_strings()` function takes one of those `Vec<Vec<u32>>`s and converts it to a list of `String`s, one per line of the graph.
+The `braille` module produces graphs using Unicode code points in the range of 0x2800 to 0x28FF (the [Braille Patterns block](http://unicode-table.com/en/blocks/braille-patterns/)).
 
-The `ParseGraphError` type is a dumb error type that has no real information, mostly there just to have something to return in poorly planned situations. I don't think `*_graph()` can technically return one unless you feed it something silly like an empty or `unsafe`ly mangled vector, and `graph_to_strings()` will only return it if you feed it something that can't become a `char`.
+The `graph` module contains functions for working with `Graph`s. The only one at present, `graph_to_strings()`, takes a `Graph` and converts it to a `Vec<String>`, one `String` per line of the graph.
+
+The `ParseGraphError` type is similar to `std::num::ParseIntError`, and will give you a brief description of the kind of error that resulted. The `*::*_graph()` functions won't return one unless you feed them something silly like an empty vector, while `graph_to_strings()` won't return an error unless you feed it a `Graph` containing something that can't become a valid `char`.
 
 ## Plotting...
 - [x] Tests
