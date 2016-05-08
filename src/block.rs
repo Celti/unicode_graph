@@ -6,10 +6,8 @@
 // This file may not be copied, modified, or distributed except
 // according to those terms.
 
-mod error;
+use super::error::Result;
+use super::error::ParseGraphError as Error;
+use super::error::GraphErrorKind::NoInput;
 
-pub use self::error::{Result, ParseGraphError};
-
-pub mod block;
-pub mod braille;
-pub mod graph;
+const EMPTY: u32 = 0x00A0;

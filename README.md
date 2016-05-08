@@ -101,14 +101,17 @@ Usage: `graph [h|v][r] <index> [<index> ...]`
 ```rust
 extern crate unicode_graph;
 
-use unicode_graph::graph;
+use unicode_graph::Result;
+use unicode_graph::ParseGraphError;
 use unicode_graph::braille;
+use unicode_graph::graph;
 
-struct graph::ParseGraphError;
-fn graph::graph_to_strings   (input: Vec<Vec<u32>>)             -> Result<Vec<String>,   ParseGraphError>;
+pub type Result<T> = std::result::Result<T, ParseGraphError>;
 
-fn braille::vertical_graph   (reverse: bool, input: Vec<usize>) -> Result<Vec<Vec<u32>>, ParseGraphError>;
-fn braille::horizontal_graph (reverse: bool, input: Vec<usize>) -> Result<Vec<Vec<u32>>, ParseGraphError>;
+fn braille::horizontal_graph (reverse: bool, input: Vec<usize>) -> Result<Vec<Vec<u32>>>;
+fn braille::vertical_graph   (reverse: bool, input: Vec<usize>) -> Result<Vec<Vec<u32>>>;
+
+fn graph::graph_to_strings   (input: Vec<Vec<u32>>)             -> Result<Vec<String>>;
 ```
 
 The input vector to `braille::*_graph()` (`Vec<usize>`) is a simple list of bar sizes (height or length). The output from them (`Vec<Vec<u32>`) is a list of lines of Unicode code points in the range of 0x2800 to 0x28FF (the [Braille Patterns block](http://unicode-table.com/en/blocks/braille-patterns/)). They also take a bool to indicate if they should produce reversed output.
@@ -123,7 +126,8 @@ The `ParseGraphError` type is a dumb error type that has no real information, mo
 - [x] Reversible graphs
 - [ ] Big chunky graphs that use 0x2580–0x259F ([Block Elements](http://unicode-table.com/en/blocks/block-elements/))
 - [ ] Unchecked functions that just zero out anything they don't like
-- [ ] Useful error type(s) that tell you where in the input they failed
+- [x] Useful error type(s) that tell you how they failed
+- [ ] More useful error type(s) that tell you where in the input they failed
 - [ ] World domination
 
 ## License & Copyright

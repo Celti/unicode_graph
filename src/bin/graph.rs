@@ -15,7 +15,7 @@ use unicode_graph::{graph, braille};
 enum CommandError {
     UnknownError,
     ParseArgs(String),
-    ParseGraph(graph::ParseGraphError),
+    ParseGraph(unicode_graph::ParseGraphError),
     ParseInt(num::ParseIntError),
 }
 
@@ -25,8 +25,8 @@ impl From<num::ParseIntError> for CommandError {
     }
 }
 
-impl From<graph::ParseGraphError> for CommandError {
-    fn from(e: graph::ParseGraphError) -> CommandError {
+impl From<unicode_graph::ParseGraphError> for CommandError {
+    fn from(e: unicode_graph::ParseGraphError) -> CommandError {
         CommandError::ParseGraph(e)
     }
 }

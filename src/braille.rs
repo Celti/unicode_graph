@@ -6,8 +6,11 @@
 // This file may not be copied, modified, or distributed except
 // according to those terms.
 
+use super::error::Result;
+use super::error::ParseGraphError as Error;
+use super::error::GraphErrorKind::NoInput;
+
 use std::cmp::max;
-use super::graph::{Result, ParseGraphError};
 
 const EMPTY: u32 = 0x2800;
 const CHAR: [&'static [&'static [u32]]; 4] =
@@ -27,7 +30,7 @@ const CHAR: [&'static [&'static [u32]]; 4] =
 
 pub fn horizontal_graph(reverse: bool, input: Vec<usize>) -> Result<Vec<Vec<u32>>> {
     let blocks     = input.len() / 2 + if input.len() % 2 > 0 { 1 } else { 0 };
-    let lines      = max((try!(input.iter().max().ok_or(ParseGraphError)) + 3) / 4, 1);
+    let lines      = max((try!(input.iter().max().ok_or(Error { kind: NoInput })) + 3) / 4, 1);
     let mut output = vec![vec![EMPTY; blocks]; lines];
     let char       = if reverse { 2 } else { 0 };
 
@@ -50,7 +53,7 @@ pub fn horizontal_graph(reverse: bool, input: Vec<usize>) -> Result<Vec<Vec<u32>
 }
 
 pub fn vertical_graph(reverse: bool, input: Vec<usize>) -> Result<Vec<Vec<u32>>> {
-    let blocks     = max((try!(input.iter().max().ok_or(ParseGraphError)) + 1) / 2, 1);
+    let blocks     = max((try!(input.iter().max().ok_or(Error { kind: NoInput })) + 1) / 2, 1);
     let lines      = input.len() / 4 + if input.len() % 4 > 0 { 1 } else { 0 };
     let mut output = vec![vec![EMPTY; blocks]; lines];
     let char       = if reverse { 3 } else { 1 };
